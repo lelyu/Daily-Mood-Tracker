@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 
 const connectDB = (url) => {
-	return mongoose.connect(url, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		useCreateIndex: true,
-		useFindAndModify: false,
+	// console.log('inside')
+	// console.log(url)
+	return mongoose.connect(url).then(() => {
+		console.log('Connected to the database')
 	})
 }
 
