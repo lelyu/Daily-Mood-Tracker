@@ -18,25 +18,35 @@ const register = async (req, res) => {
 const login = async (req, res) => {
 	const { email, password } = req.body
 	if (!email || !password) {
-		return res
-			.status(StatusCodes.BAD_REQUEST)
-			.json({ message: 'Please provide email and password' })
+		throw new CustomError.BadRequestError(
+			'Please provide email and password'
+		)
 	}
 	const user = await User.findOne({ email })
+	if (!user) {
+		throw new CustomError.UnauthenticatedError('Invalid credentials')
+	}
 	const isPasswordCorrect = await user.matchPassword(password)
 
-	if (!user || !isPasswordCorrect) {
-		return res
-			.status(StatusCodes.UNAUTHORIZED)
-			.json({ message: 'Invalid credentials' })
+	if (!isPasswordCorrect) {
+		throw new CustomError.UnauthenticatedError('Invalid credentials')
 	}
 
-	const token = user.createJWT()
-	res.status(StatusCodes.OK).json({ user: user.getName(), token })
+	const tokenUser = createTokenUser(user)
+	attachCookiesToResponse({ user: tokenUser }, res)
+	res.status(StatusCodes.OK).json({ user: tokenUser })
+}
+
+const logout = async (req, res) => {
+	res.cookie('token', 'logout', {
+		httpOnly: true,
+		expires: new Date(Date.now() + 1000),
+	})
+	res.status(StatusCodes.OK).json({ msg: 'User logged out' })
 }
 
 const dashboard = async (req, res) => {
 	res.json({ message: 'Welcome to dashboard' })
 }
 
-module.exports = { register, login, dashboard }
+module.exports = { register, login, dashboard, logout }

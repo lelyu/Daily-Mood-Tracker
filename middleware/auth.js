@@ -1,3 +1,6 @@
+const CustomError = require('../errors')
+const { isTokenValid } = require('./utils')
+
 const jwt = require('jsonwebtoken')
 const authMiddleware = (req, res, next) => {
 	console.log('header', req.headers)
