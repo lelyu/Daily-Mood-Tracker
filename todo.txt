@@ -1,0 +1,4 @@
+currently working on: user auth workflow
+todo: setting up auth middleware and testing API
+
+next sprint: Mood Logging API
