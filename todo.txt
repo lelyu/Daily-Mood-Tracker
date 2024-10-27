@@ -1,4 +1,3 @@
-currently working on: user auth workflow
-todo: setting up auth middleware and testing API
+Oct 26: finish setting up auth workflow
 
-next sprint: Mood Logging API
+currently working on: creating a basic mood logging API
