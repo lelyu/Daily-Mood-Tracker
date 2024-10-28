@@ -1,3 +1,5 @@
-Oct 26: finish setting up auth workflow
+Oct 26: finished setting up auth workflow
 
 currently working on: creating a basic mood logging API
+
+Oct 27: Mood Model, CRUD
