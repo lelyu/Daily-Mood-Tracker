@@ -1,4 +1,4 @@
-const Mood = require('../models/moodModel')
+const Mood = require('../models/Mood')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 

@@ -26,3 +26,5 @@ const MoodSchema = new mongoose.Schema({
 		required: true,
 	},
 })
+
+module.exports = mongoose.model('Mood', MoodSchema)

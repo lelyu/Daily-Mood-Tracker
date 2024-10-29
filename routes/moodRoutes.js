@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { authMiddleware } = require('../middleware/auth')
+const authMiddleware = require('../middleware/auth')
 const {
 	getMoods,
+	getMood,
 	createMood,
 	updateMood,
 	deleteMood,
@@ -13,5 +14,6 @@ router
 	.route('/:id')
 	.patch(authMiddleware, updateMood)
 	.delete(authMiddleware, deleteMood)
+	.get(authMiddleware, getMood)
 
 module.exports = router
