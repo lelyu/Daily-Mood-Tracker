@@ -19,21 +19,25 @@ const helmet = require('helmet')
 
 const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
+const { allow } = require('joi')
 app.set('trust proxy', 1)
-app.use(
-	rateLimiter({
-		windowMs: 15 * 60 * 1000, // 15 minutes
-		max: 100,
-	})
-)
+// app.use(
+// 	rateLimiter({
+// 		windowMs: 15 * 60 * 1000, // 15 minutes
+// 		max: 100,
+// 	})
+// )
 
 app.use(helmet())
 app.use(
 	cors({
 		origin: 'http://localhost:3001',
+		methods: ['GET', 'POST', 'PUT', 'DELETE'],
+		allowedHeaders: ['Content-Type', 'Authorization'],
 		credentials: true, // Allows cookies to be included
 	})
 )
+app.options('*', cors()) // enable pre-flight
 app.use(xss())
 app.use(express.static('./public'))
 app.use(express.json())
