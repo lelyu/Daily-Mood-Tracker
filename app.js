@@ -32,7 +32,7 @@ app.use(helmet())
 app.use(
 	cors({
 		origin: 'http://localhost:3001',
-		methods: ['GET', 'POST', 'PUT', 'DELETE'],
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
 		credentials: true, // Allows cookies to be included
 	})
