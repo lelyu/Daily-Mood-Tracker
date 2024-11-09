@@ -51,4 +51,10 @@ const dashboard = async (req, res) => {
 	res.json({ message: 'Welcome to dashboard' })
 }
 
-module.exports = { register, login, dashboard, logout }
+// check if user is logged in
+const isLoggedIn = async (req, res) => {
+	const user = req.user
+	res.status(StatusCodes.OK).json({ user, isLoggedIn: !!user })
+}
+
+module.exports = { register, login, dashboard, logout, isLoggedIn }
