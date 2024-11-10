@@ -4,4 +4,4 @@ Oct 27: created Mood Model and CRUD
 
 Oct 28: fixed some bugs and tested the API
 
-todo: frontend
+todo: allow user to delete their account and history
