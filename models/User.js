@@ -6,7 +6,9 @@ const UserSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: [true, 'Please provide a username'],
-		match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+		minlength: 3,
+		maxlength: 50,
+		unique: true,
 	},
 	email: {
 		type: String,
@@ -29,7 +31,7 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.methods.getName = function () {
-	return this.username
+	return this.name
 }
 
 UserSchema.methods.createJWT = async function () {
