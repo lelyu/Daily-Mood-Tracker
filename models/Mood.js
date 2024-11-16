@@ -14,7 +14,7 @@ const MoodSchema = new mongoose.Schema({
 	},
 	note: {
 		type: String,
-		maxlength: 100,
+		maxlength: 500,
 	},
 	createdAt: {
 		type: Date,
