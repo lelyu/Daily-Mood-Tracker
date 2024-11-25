@@ -7,6 +7,7 @@ const {
 	createMood,
 	updateMood,
 	deleteMood,
+	deleteMultipleMoods,
 } = require('../controllers/moodController')
 
 router.route('/').get(authMiddleware, getMoods).post(authMiddleware, createMood)
@@ -15,5 +16,7 @@ router
 	.patch(authMiddleware, updateMood)
 	.delete(authMiddleware, deleteMood)
 	.get(authMiddleware, getMood)
+
+router.route('/delete-multiple').post(authMiddleware, deleteMultipleMoods)
 
 module.exports = router
