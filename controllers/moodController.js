@@ -48,10 +48,23 @@ const deleteMood = async (req, res) => {
 	res.status(StatusCodes.OK).json({ mood })
 }
 
+const deleteMultipleMoods = async (req, res) => {
+	const { ids } = req.body
+	const moods = await Mood.deleteMany({
+		_id: { $in: ids },
+		user: req.user.userId,
+	})
+	if (!moods) {
+		throw new CustomError.NotFoundError(`No moods with ids : ${ids}`)
+	}
+	res.status(StatusCodes.OK).json({ moods })
+}
+
 module.exports = {
 	getMoods,
 	createMood,
 	getMood,
 	updateMood,
 	deleteMood,
+	deleteMultipleMoods,
 }
