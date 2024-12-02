@@ -21,8 +21,7 @@ const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 const { allow } = require('joi')
 const allowedOrigins = [
-	'http://localhost:3001',
-	'mood-tracker-frontend.vercel.app',
+	'http://localhost:3001', // Local dev origin
 ]
 app.set('trust proxy', 1)
 // app.use(
@@ -36,8 +35,14 @@ app.use(helmet())
 app.use(
 	cors({
 		origin: (origin, callback) => {
-			console.log('Incoming request origin:', origin)
-			if (!origin || allowedOrigins.includes(origin)) {
+			// Allow localhost and all subdomains of lelyus-projects.vercel.app
+			if (
+				!origin ||
+				allowedOrigins.includes(origin) ||
+				/https:\/\/mood-tracker-frontend-[\w-]+\.lelyus-projects\.vercel\.app/.test(
+					origin
+				)
+			) {
 				callback(null, true)
 			} else {
 				console.error('Blocked by CORS:', origin)
