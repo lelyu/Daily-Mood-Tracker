@@ -20,6 +20,10 @@ const helmet = require('helmet')
 const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 const { allow } = require('joi')
+const allowedOrigins = [
+	'http://localhost:3001',
+	'https://mood-tracker-frontend-fqc6v6w1n-lelyus-projects.vercel.app',
+]
 app.set('trust proxy', 1)
 // app.use(
 // 	rateLimiter({
@@ -31,13 +35,21 @@ app.set('trust proxy', 1)
 app.use(helmet())
 app.use(
 	cors({
-		origin: 'http://localhost:3001',
+		origin: (origin, callback) => {
+			console.log('Incoming request origin:', origin)
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true)
+			} else {
+				console.error('Blocked by CORS:', origin)
+				callback(new Error('Not allowed by CORS'))
+			}
+		},
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
-		credentials: true, // Allows cookies to be included
+		credentials: true,
 	})
 )
-app.options('*', cors()) // enable pre-flight
+app.options('*', cors())
 app.use(xss())
 app.use(express.static('./public'))
 app.use(express.json())
