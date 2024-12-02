@@ -22,7 +22,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler')
 const { allow } = require('joi')
 const allowedOrigins = [
 	'http://localhost:3001',
-	'https://mood-tracker-frontend-fqc6v6w1n-lelyus-projects.vercel.app',
+	'mood-tracker-frontend.vercel.app',
 ]
 app.set('trust proxy', 1)
 // app.use(
