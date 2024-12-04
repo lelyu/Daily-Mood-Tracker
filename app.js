@@ -22,6 +22,8 @@ const errorHandlerMiddleware = require('./middleware/error-handler')
 const { allow } = require('joi')
 const allowedOrigins = [
 	'http://localhost:3001', // Local dev origin
+	'https://mood-tracker-frontend-g3z7k927f-lelyus-projects.vercel.app', // Vercel deployment
+	'https://mood-tracker-frontend-9h425oqmo-lelyus-projects.vercel.app', // Vercel deployment
 ]
 app.set('trust proxy', 1)
 // app.use(
@@ -35,26 +37,25 @@ app.use(helmet())
 app.use(
 	cors({
 		origin: (origin, callback) => {
-			// Allow localhost and all subdomains of lelyus-projects.vercel.app
 			if (
-				!origin ||
-				allowedOrigins.includes(origin) ||
-				/https:\/\/mood-tracker-frontend-[\w-]+\.lelyus-projects\.vercel\.app/.test(
+				!origin || // Allow non-browser clients (e.g., Postman, curl)
+				allowedOrigins.includes(origin) || // Allow specific origins
+				/^https:\/\/mood-tracker-frontend-[\w-]+\.lelyus-projects\.vercel\.app$/.test(
 					origin
-				)
+				) // Allow all Vercel subdomains
 			) {
 				callback(null, true)
 			} else {
-				console.error('Blocked by CORS:', origin)
+				console.error(`Blocked by CORS: ${origin}`)
 				callback(new Error('Not allowed by CORS'))
 			}
 		},
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
-		credentials: true,
+		credentials: true, // Allow cookies
 	})
 )
-app.options('*', cors())
+
 app.use(xss())
 app.use(express.static('./public'))
 app.use(express.json())
