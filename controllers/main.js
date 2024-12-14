@@ -35,7 +35,6 @@ const login = async (req, res) => {
 
 	const tokenUser = createTokenUser(user)
 	attachCookiesToResponse({ res, user: tokenUser })
-	console.log('testing from login', tokenUser)
 	res.status(StatusCodes.OK).json({ msg: 'logged in', user: tokenUser })
 }
 
@@ -54,7 +53,6 @@ const dashboard = async (req, res) => {
 // check if user is logged in
 const isLoggedIn = async (req, res) => {
 	const user = req.user
-	console.log('testing from isLoggedIn', user)
 	res.status(StatusCodes.OK).json({ user, isLoggedIn: !!user })
 }
 

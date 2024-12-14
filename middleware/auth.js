@@ -4,7 +4,6 @@ const { isTokenValid } = require('../utils')
 const jwt = require('jsonwebtoken')
 const authMiddleware = (req, res, next) => {
 	const token = req.cookies.token || req.signedCookies.token
-	console.log('token from authMiddleware', token)
 	if (!token) {
 		throw new CustomError.UnauthenticatedError('Authentication invalid')
 	}
