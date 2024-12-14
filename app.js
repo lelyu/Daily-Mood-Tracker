@@ -18,9 +18,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 
 // Allowed origins for CORS
-const allowedOrigins = [
-	'http://localhost:3001', // Local development
-]
+const allowedOrigins = ['http://localhost:3001', 'http://localhost:3000']
 
 // Trust proxy for rate limiting or cloud deployments
 app.set('trust proxy', 1)
