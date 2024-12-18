@@ -1,7 +1,11 @@
 const User = require('../models/User')
+const Token = require('../models/Token')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 const { attachCookiesToResponse, createTokenUser } = require('../utils')
+const crypto = require('crypto')
+const bcrypt = require('bcryptjs')
+const { sendEmail } = require('./sendEmail')
 
 const register = async (req, res) => {
 	const { email, name, password } = req.body
@@ -54,6 +58,29 @@ const dashboard = async (req, res) => {
 const isLoggedIn = async (req, res) => {
 	const user = req.user
 	res.status(StatusCodes.OK).json({ user, isLoggedIn: !!user })
+}
+
+const resetPassword = async (req, res) => {
+	const { email } = req.body
+	const user = await User.findOne({ email })
+
+	if (!user) {
+		throw new Error('User does not exist')
+	}
+	let token = await Token.findOne({ userId: user._id })
+	if (token) {
+		await token.deleteOne()
+	}
+	const resetToken = crypto.randomBytes(32).toString('hex')
+	const hash = await bcrypt.hash(resetToken, 10)
+	await new Token({
+		userId: user._id,
+		token: hash,
+		createdAt: Date.now(),
+	}).save()
+	const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`
+	sendEmail(user.email)
+	return link
 }
 
 module.exports = { register, login, dashboard, logout, isLoggedIn }
